@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "weight_policy": {
+    "version": 1,
+    "basis": "business_priority",
+    "core_min_share": 0.5
+  },
+  "gate_tests": [
+    "test_outputs.py::test_gate_hidden_assignment_closes_all_endpoints"
+  ],
+  "tests": {
+    "test_outputs.py::test_unlabelled_samples_recover_hidden_campaign_partition": {
+      "weight": 0.14,
+      "priority": "core",
+      "rationale": "样品批次归属是后续保温策略和树脂批号追溯的前提。"
+    },
+    "test_outputs.py::test_shared_rate_recovers_prefactor": {
+      "weight": 0.13,
+      "priority": "core",
+      "rationale": "共用指前因子决定两批短程保温的绝对反应速度。"
+    },
+    "test_outputs.py::test_latent_intermediate_state_is_resolved_per_campaign": {
+      "weight": 0.13,
+      "priority": "core",
+      "rationale": "两批初始中间态分数是终点曲线差异的物理来源。"
+    },
+    "test_outputs.py::test_rotated_assignment_still_uses_seed_order_for_campaign_numbers": {
+      "weight": 0.12,
+      "priority": "core",
+      "rationale": "重排样品后仍按中间态升序编号，证明批次号来自模型。"
+    },
+    "test_outputs.py::test_extra_top_level_key_is_refused_without_output": {
+      "weight": 0.06,
+      "priority": "schema",
+      "rationale": "多余字段会破坏实验导出档边界，必须在求解前停止。"
+    },
+    "test_outputs.py::test_seven_runs_are_refused": {
+      "weight": 0.04,
+      "priority": "boundary",
+      "rationale": "记录数不足时两个批次和四个样品无法按公开设计对账。"
+    },
+    "test_outputs.py::test_sample_observed_once_is_refused": {
+      "weight": 0.06,
+      "priority": "boundary",
+      "rationale": "单次样品缺少第二条历程，无法确认初始中间态估计。"
+    },
+    "test_outputs.py::test_nonmonotone_profile_time_is_refused": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "倒序时间会翻转保温历程，必须避免错误积分。"
+    },
+    "test_outputs.py::test_boolean_conversion_is_refused_as_non_numeric": {
+      "weight": 0.05,
+      "priority": "boundary",
+      "rationale": "布尔终点会伪装成零或一，污染归属与速率计算。"
+    },
+    "test_outputs.py::test_wrong_schema_is_refused": {
+      "weight": 0.04,
+      "priority": "schema",
+      "rationale": "错误版本标识会把另一套字段混入当前保温复核。"
+    },
+    "test_outputs.py::test_activation_above_public_limit_is_refused": {
+      "weight": 0.04,
+      "priority": "boundary",
+      "rationale": "越界活化能会让共用的温度敏感性失去实验依据。"
+    },
+    "test_outputs.py::test_fit_tolerance_above_public_limit_is_refused": {
+      "weight": 0.04,
+      "priority": "boundary",
+      "rationale": "过宽容差会把没有闭合的占位参数误当成有效诊断。"
+    },
+    "test_outputs.py::test_output_uses_compact_sorted_json_bytes": {
+      "weight": 0.05,
+      "priority": "supporting",
+      "rationale": "固定序列化口径便于归档系统按字节复核批次诊断。"
+    },
+    "test_outputs.py::test_repeated_fit_produces_identical_output": {
+      "weight": 0.05,
+      "priority": "recovery",
+      "rationale": "重复回算一致能让交接班后的参数复核不产生差异。"
+    }
+  }
+}
