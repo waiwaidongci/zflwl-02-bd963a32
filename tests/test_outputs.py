@@ -11,6 +11,15 @@ import pytest
 
 
 ENTRY = os.environ.get("DUAL_CURE_ENTRY", "/app/predict.py")
+
+SAFE_ENV = {
+    "PATH": "/usr/bin:/bin",
+    "HOME": "/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+}
 R = 8.314462618
 ACTIVATION_KJ = 85.0
 TRUE_LOG_A = 8.8
@@ -27,9 +36,10 @@ PROFILE_PAIRS = [(0, 2), (1, 3), (1, 0), (3, 2)]
 
 def _run(source: Path, output: Path) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, ENTRY, str(source), str(output)],
+        [sys.executable, "-S", "-P", "-B", ENTRY, str(source), str(output)],
         text=True,
         capture_output=True,
+        env=SAFE_ENV,
         timeout=20,
         check=False,
     )
